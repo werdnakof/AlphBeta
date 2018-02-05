@@ -7,12 +7,14 @@ import AlphaBeta.Player;
 public class Game implements State {
 
     private boolean playerStart;
-    private Player[] grid = new Player[9];
+    private TicTacMove[] grid = new TicTacMove[9];
     private Human human;
+    private Computer computer;
 
-    public Game(boolean playerStart, Human human) {
+    public Game(boolean playerStart) {
         this.playerStart = playerStart;
-        this.human = human;
+        this.human = new Human();
+        this.computer = new Computer();
     }
 
     @Override
@@ -56,11 +58,11 @@ public class Game implements State {
 
         int index = 0;
 
-        for(Player player: this.grid) {
+        for(TicTacMove move: this.grid) {
             sb.append("[");
 
-            if(player == null) sb.append(" ");
-            else sb.append(player);
+            if(move == null) sb.append(" ");
+            else sb.append(move.playedBy());
 
             sb.append("]");
 
@@ -72,8 +74,7 @@ public class Game implements State {
     }
 
     static public void main (String[] args) {
-        Human h = new Human('H');
-        Game g = new Game(true, h);
+        Game g = new Game(true);
         System.out.println(g);
     }
 }
