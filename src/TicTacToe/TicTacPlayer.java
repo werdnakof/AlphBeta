@@ -9,6 +9,11 @@ public abstract class TicTacPlayer implements Player {
         this.identifier = identifier;
     }
 
+    /**
+     *
+     */
+    public abstract TicTacMove createMove(TicTacPlayer[] grid);
+
     @Override
     public String toString() {
         return String.valueOf(this.identifier);
