@@ -28,12 +28,15 @@ public class Computer extends AlphaBetaEngine implements Player {
         // prefer the center square:
         float base = 1.0f;
 
-        if (tttg.getPlayerInTile(4) == this.name) {
-            base += 0.4f;
-        } else if (tttg.getPlayerInTile(4) != null) {
-            base -= 0.4f;
-        }
+        Character centerTile = tttg.getPlayerInTile(4);
 
+        if (centerTile != null) {
+            if(centerTile == this.name) {
+                base += 0.4f;
+            } else {
+                base -= 0.4f;
+            }
+        }
         float ret = (base - 1.0f);
         if (tttg.hasWonBy(this))  {
             return (base + (1.0f / count));
@@ -51,13 +54,13 @@ public class Computer extends AlphaBetaEngine implements Player {
         // can use for loop instead, but want to try stream
         return Arrays.stream(tttGame.getEmptyTileIndicies())
                 .mapToObj(i -> new TicTacToeMove(i, this))
-                .toArray(TicTacToeMove[]::new);
+                .toArray(Move[]::new);
     }
 
     @Override
     public boolean reachedMaxDepth(State state, Integer depth) {
         TicTacToeState tttGame = (TicTacToeState) state;
-        return tttGame.hasDrawn() || tttGame.hasWon();
+        return depth == 0 || tttGame.hasDrawn() || tttGame.hasWon();
     }
 
     @Override
@@ -69,7 +72,7 @@ public class Computer extends AlphaBetaEngine implements Player {
         if(tttGame.isValidMove(this, move)){
             tttGame.setMove(this, move);
         }
-        
-        return null;
+
+        return tttGame;
     }
 }

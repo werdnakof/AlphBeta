@@ -8,7 +8,7 @@ import java.util.*;
 
 public class TicTacToeState implements State {
 
-    private Character[] grid = new Character[9];
+    private Character[] grid;
     private int emptyTilesCount;
 
     private int[][] winningCombos = {
@@ -19,11 +19,12 @@ public class TicTacToeState implements State {
 
     public TicTacToeState() {
         this.emptyTilesCount = 9;
+        this.grid = new Character[9];
     }
 
     public TicTacToeState(TicTacToeState another) {
         this.emptyTilesCount = another.getEmptyTileIndicies().length;
-        this.grid = another.getGrid();
+        this.grid = another.getGrid().clone();
     }
 
     public Character[] getGrid() {
@@ -38,7 +39,7 @@ public class TicTacToeState implements State {
         int[] ret = new int[this.emptyTilesCount];
         int inc = 0;
         for (int i=0; i<9; i++) {
-            if (this.grid == null) ret[inc] = i++ ; // i.e. tile is blank
+            if (this.grid[i] == null) ret[inc++] = i; // i.e. tile is blank
         }
         return ret;
     }
@@ -92,6 +93,8 @@ public class TicTacToeState implements State {
     }
 
     private boolean isThreeInARow(int i1, int i2, int i3, Character player) {
+        if(grid[i1] == null || grid[i2] == null || grid[i3] == null) return false;
+
         if(player == null && grid[i1] == grid[i2] && grid[i1] == grid[i3])
             return true;
         else if (grid[i1] == player && grid[i2] == player && grid[i3] == player)

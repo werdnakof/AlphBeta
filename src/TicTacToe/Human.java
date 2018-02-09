@@ -6,7 +6,11 @@ import Game.Player;
 
 public class Human implements Player {
 
-    final Character name = 'H';
+    private Character name;
+
+    public Human(Character name) {
+        this.name = name;
+    }
 
     @Override
     public Move genMove(State state) {
@@ -17,7 +21,7 @@ public class Human implements Player {
                 int ch = System.in.read();
                 idx = ch - 48;
                 System.in.read();
-                System.in.read();
+//                System.in.read();
 
                 TicTacToeMove m = new TicTacToeMove(idx, this);
 
