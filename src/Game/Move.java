@@ -1,4 +1,4 @@
-package AlphaBeta;
+package Game;
 
 public interface Move {
 }
