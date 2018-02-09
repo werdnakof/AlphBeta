@@ -62,10 +62,14 @@ public class Computer extends AlphaBetaEngine implements Player {
 
     @Override
     public State applyMove(State state, Move move) {
-        TicTacToeState tttGame = (TicTacToeState) state;
+        TicTacToeState tmp = (TicTacToeState) state;
+
+        // create a new state when applying move
+        TicTacToeState tttGame = new TicTacToeState(tmp);
         if(tttGame.isValidMove(this, move)){
             tttGame.setMove(this, move);
         }
+        
         return null;
     }
 }

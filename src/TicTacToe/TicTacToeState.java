@@ -21,6 +21,15 @@ public class TicTacToeState implements State {
         this.emptyTilesCount = 9;
     }
 
+    public TicTacToeState(TicTacToeState another) {
+        this.emptyTilesCount = another.getEmptyTileIndicies().length;
+        this.grid = another.getGrid();
+    }
+
+    public Character[] getGrid() {
+        return grid;
+    }
+
     public Character getPlayerInTile(int index) {
         return this.grid[index];
     }
