@@ -4,16 +4,12 @@ import Game.State;
 import Game.Move;
 import Game.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
-public class TicTacToeGame implements State {
+public class TicTacToeState implements State {
 
-    private boolean playerStart;
     private Character[] grid = new Character[9];
-    private HashMap<Character, Player> players = new HashMap<>();
+    private int emptyTilesCount;
 
     private int[][] winningCombos = {
             {0,1,2}, {3,4,5}, {6,7,8},
@@ -21,39 +17,21 @@ public class TicTacToeGame implements State {
             {0,3,6}, {1,4,7}
     };
 
-    public TicTacToeGame(boolean playerStart) {
-        this.playerStart = playerStart;
-
-        Human h = new Human();
-        Computer c = new Computer();
-
-        this.players.put(h.getCharLabel(), h);
-        this.players.put(c.getCharLabel(), c);
-    }
-
-    // check if iterate copy required!!!
-    public Character[] getGrid() {
-        Character[] ret = new Character[9];
-        for(int i = 0; i < 9; i++) {
-            ret[i] = this.grid[i];
-        }
-        return ret;
-    }
-
-    public Set<Character> getPlayers() {
-        return this.players.keySet();
+    public TicTacToeState() {
+        this.emptyTilesCount = 9;
     }
 
     public Character getPlayerInTile(int index) {
         return this.grid[index];
     }
 
-    public int getEmptyTilesCount() {
-        int count = 0;
+    public int[] getEmptyTileIndicies() {
+        int[] ret = new int[this.emptyTilesCount];
+        int inc = 0;
         for (int i=0; i<9; i++) {
-            if (this.grid == null) count++; // i.e. tile is blank
+            if (this.grid == null) ret[inc] = i++ ; // i.e. tile is blank
         }
-        return count;
+        return ret;
     }
 
     @Override
@@ -83,6 +61,17 @@ public class TicTacToeGame implements State {
     }
 
     @Override
+    public boolean setMove(Player p, Move m) {
+        if(isValidMove(p, m)) {
+            TicTacToeMove tttm = (TicTacToeMove) m;
+            this.grid[tttm.getIndex()] = p.getCharLabel();
+            this.emptyTilesCount--;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean isValidMove(Player p, Move m) {
         TicTacToeMove move = (TicTacToeMove) m;
 
@@ -99,10 +88,6 @@ public class TicTacToeGame implements State {
         else if (grid[i1] == player && grid[i2] == player && grid[i3] == player)
             return true;
         return false;
-    }
-
-    @Override
-    public void start() {
     }
 
     @Override
@@ -124,11 +109,5 @@ public class TicTacToeGame implements State {
             index++;
         }
         return sb.toString();
-    }
-
-    static public void main (String[] args) {
-        TicTacToeGame g = new TicTacToeGame(true);
-//        g.start();
-        System.out.println(g);
     }
 }

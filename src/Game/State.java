@@ -5,5 +5,5 @@ public interface State {
     boolean hasWonBy(Player player);
     boolean hasWon();
     boolean isValidMove(Player player, Move move);
-    void start();
+    boolean setMove(Player player, Move move);
 }
