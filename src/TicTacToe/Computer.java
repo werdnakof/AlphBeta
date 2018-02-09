@@ -1,9 +1,11 @@
 package TicTacToe;
 
 import AlphaBeta.AlphaBetaEngine;
-import Game.Player;
 import Game.Move;
+import Game.Player;
 import Game.State;
+
+import java.util.Arrays;
 
 public class Computer extends AlphaBetaEngine implements Player {
 
@@ -19,9 +21,9 @@ public class Computer extends AlphaBetaEngine implements Player {
 
     @Override
     public float positionEvaluation(State state) {
-        TicTacToeGame tttg = (TicTacToeGame) state;
+        TicTacToeState tttg = (TicTacToeState) state;
 
-        int count = 10 - tttg.getEmptyTilesCount();
+        int count = 10 - tttg.getEmptyTileIndicies().length;
 
         // prefer the center square:
         float base = 1.0f;
@@ -44,19 +46,26 @@ public class Computer extends AlphaBetaEngine implements Player {
 
     @Override
     public Move[] possibleMoves(State state) {
+        TicTacToeState tttGame = (TicTacToeState) state;
 
-        return new Move[0];
+        // can use for loop instead, but want to try stream
+        return Arrays.stream(tttGame.getEmptyTileIndicies())
+                .mapToObj(i -> new TicTacToeMove(i, this))
+                .toArray(TicTacToeMove[]::new);
     }
 
     @Override
     public boolean reachedMaxDepth(State state, Integer depth) {
-        TicTacToeGame tttGame = (TicTacToeGame) state;
-        return tttGame.hasDrawn();
+        TicTacToeState tttGame = (TicTacToeState) state;
+        return tttGame.hasDrawn() || tttGame.hasWon();
     }
 
     @Override
     public State applyMove(State state, Move move) {
-        TicTacToeGame tttGame = (TicTacToeGame) state;
+        TicTacToeState tttGame = (TicTacToeState) state;
+        if(tttGame.isValidMove(this, move)){
+            tttGame.setMove(this, move);
+        }
         return null;
     }
 }
