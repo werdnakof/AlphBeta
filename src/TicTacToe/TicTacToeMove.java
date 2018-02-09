@@ -1,17 +1,18 @@
 package TicTacToe;
 
-import AlphaBeta.Move;
+import Game.Move;
+import Game.Player;
 
-public class TicTacMove implements Move {
+public class TicTacToeMove implements Move {
     private Integer index;
-    private TicTacPlayer playedBy;
+    private Player playedBy;
 
-    public TicTacMove(Integer index, TicTacPlayer playedBy) {
+    public TicTacToeMove(Integer index, Player playedBy) {
         this.index = index;
         this.playedBy = playedBy;
     }
 
-    public TicTacPlayer playedBy() {
+    public Player playedBy() {
         return playedBy;
     }
 

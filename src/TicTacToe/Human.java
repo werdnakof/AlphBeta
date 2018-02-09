@@ -1,26 +1,37 @@
 package TicTacToe;
 
-public class Human extends TicTacPlayer {
-    public Human() {
-        super('H');
+import Game.State;
+import Game.Move;
+import Game.Player;
+
+public class Human implements Player {
+
+    final Character name = 'H';
+
+    @Override
+    public Move genMove(State state) {
+
+        int idx;
+        while(true) {
+            try {
+                int ch = System.in.read();
+                idx = ch - 48;
+                System.in.read();
+                System.in.read();
+
+                TicTacToeMove m = new TicTacToeMove(idx, this);
+
+                if(state.isValidMove(this, m))
+                    return m;
+                else
+                    System.out.println("Invalid Move @ " + String.valueOf(idx));
+
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     @Override
-    public TicTacMove createMove(TicTacPlayer[] grid) {
-        int i = 0;
-        try {
-            int ch = System.in.read();
-            i = ch - 48;
-            System.in.read();
-            System.in.read();
-        } catch (Exception e) { }
-
-        return new TicTacMove(i, this);
-    }
-
-    public static void main (String[] cars) {
-        Human h = new Human();
-        TicTacPlayer[] grid = new TicTacPlayer[9];
-        System.out.println(h.createMove(grid));
-    }
+    public Character getCharLabel() { return this.name; }
 }
